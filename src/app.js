@@ -1,40 +1,21 @@
 const express = require("express");
 const app = express();
 
-// Order of the routes matter a lot ->
-// app.use("/user/2", (req, res) => {
-//   res.send("Hello from the user2");
-// });
-// app.use("/user", (req, res) => {
-//   res.send("Hello from the user");
-// });
-// app.use("/test", (req, res) => {
-//   res.send("Hello from the test");
-// });
-// app.use("/", (req, res) => {
-//   res.send("Hello from the home");
-// });
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-// This will handle all the HTTP methods - API calls to route '/user'
-// app.use("/user", (req, res) => {
-//   res.send("Hello from the user");
-// });
-
-// This will only handle 'GET' API call to '/user'
-app.get("/user", (req, res) => {
-  res.send({ firstName: "Mradul", lastName: "Tiwari" });
+app.use("/admin", adminAuth);
+app.get("/admin/getUserData", (req, res) => {
+  res.send("User data retrieved successfully");
+});
+app.get("/admin/deleteUserData", (req, res) => {
+  res.send("User data deleted successfully");
 });
 
-// This will only handle 'POST' API call to '/user'
-app.post("/user", (req, res) => {
-  // Saving data to DB
-  res.send("Data successfully saved to the Database!!");
+app.get("/user/login", (req, res) => {
+  res.send("User logged in successfully");
 });
-
-// This will only handle 'DELETE' API call to '/user'
-app.delete("/user", (req, res) => {
-  // Deleting user data
-  res.send("Deleted successfully!!");
+app.get("/user/data", userAuth, (req, res) => {
+  res.send("User data access approved");
 });
 
 app.listen(7777, () => {
