@@ -76,7 +76,7 @@
 //   },
 // );
 
-// Alternate way to write multiple route-handlers
+// Alternate way to write multiple route-handlers ->
 // app.use("/user", (req, res, next) => {
 //   console.log("Handling the route user");
 //   next();
@@ -105,6 +105,44 @@
 //     res.send("2nd Route Handler");
 //   }
 // );
+
+// Using Auth Middlewares ->
+// const { adminAuth, userAuth } = require("./middlewares/auth");
+
+// app.use("/admin", adminAuth);
+// app.get("/admin/getUserData", (req, res) => {
+//   res.send("User data retrieved successfully");
+// });
+// app.get("/admin/deleteUserData", (req, res) => {
+//   res.send("User data deleted successfully");
+// });
+
+// app.get("/user/login", (req, res) => {
+//   res.send("User logged in successfully");
+// });
+// app.get("/user/data", userAuth, (req, res) => {
+//   res.send("User data access approved");
+// });
+
+// Error Handling ->
+// app.use("/", (err, req, res, next) => {
+//   if (err) res.status(500).send("Something went wrong!!!!");
+// });
+// app.get("/getUserData", (req, res) => {
+//   try {
+//     Logic of DB call and get user data
+//     throw new Error("Some random error occured!!");
+//     res.send("user data sent");
+//   } catch (error) {
+//     res.status(500).send("Some error: contact support team");
+//   }
+// });
+// app.use("/", (err, req, res, next) => {
+//   if (err) {
+//     Log all the errors caught in any route, into a Log monitoring service - helps to resolve all the code breaks
+//     res.status(500).send("Something went wrong");
+//   }
+// });
 
 // app.listen(7777, () => {
 //   console.log("Server is successfully listening on port 7777...");
