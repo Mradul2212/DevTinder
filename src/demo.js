@@ -137,6 +137,8 @@
 //     res.status(500).send("Some error: contact support team");
 //   }
 // });
+
+// Write this 'wildcard-error-handler' at the very end so that if any uncaught random error is occured apart from the try-catch, it will handle it gracefully!! 
 // app.use("/", (err, req, res, next) => {
 //   if (err) {
 //     Log all the errors caught in any route, into a Log monitoring service - helps to resolve all the code breaks
