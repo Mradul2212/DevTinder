@@ -1,19 +1,20 @@
 // Handling Auth Middlewares for all HTTP requests
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
-const adminAuth = (req, res, next) => {
-  console.log("Admin Auth is getting checked!!");
-  const token = "xyz";
-  const isAdminAuth = token === "xyz";
-  if (isAdminAuth) next();
-  else res.status(401).send("Unauthorised access");
+const userAuth = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) throw new Error("Missing auth token");
+    const decodedData = await jwt.verify(token, "Dev@Tinder$2212");
+    const { _id } = decodedData;
+    const user = await User.findById(_id);
+    if (!user) throw new Error("User doesn't Exist");
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
+  }
 };
 
-const userAuth = (req, res, next) => {
-  console.log("User Auth is getting checked!!");
-  const token = "abc123xyz";
-  const isUserAuth = token === "abc";
-  if (isUserAuth) next();
-  else res.status(401).send("Unauthorised access");
-};
-
-module.exports = { adminAuth, userAuth };
+module.exports = { userAuth };
