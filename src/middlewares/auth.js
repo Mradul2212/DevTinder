@@ -5,7 +5,9 @@ const User = require("../models/user");
 const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    if (!token) throw new Error("Missing auth token");
+    if (!token) {
+      return res.status(401).send("Unauthorised access");
+    }
     const decodedData = await jwt.verify(token, "Dev@Tinder$2212");
     const { _id } = decodedData;
     const user = await User.findById(_id);
